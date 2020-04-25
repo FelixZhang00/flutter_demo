@@ -59,5 +59,12 @@ class HomeRequest {
     final result = await HttpRequest.request(url);
 
     final subjects = result["subjects"];
+
+    List<MovieItem> movies = [];
+    for(var sub in subjects){
+      movies.add(MovieItem.fromJson(sub));
+    }
+
+    return movies;
   }
 }
