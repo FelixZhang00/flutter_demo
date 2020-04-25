@@ -1,5 +1,6 @@
 import 'package:dio/dio.dart';
 
+
 class HttpRequest {
   static BaseOptions baseOption = BaseOptions(connectTimeout: 10000);
   static Dio dio = Dio();
