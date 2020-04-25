@@ -20,7 +20,6 @@ class Home extends StatelessWidget{
 }
 
 //todo 滚动分页请求
-//todo loading展示
 class MyHomePage extends StatefulWidget {
   MyHomePage({Key key}) : super(key: key);
 
@@ -45,10 +44,9 @@ class _MyHomePageState extends State<MyHomePage> {
 
   @override
   void initState() {
-    // TODO: implement initState
     super.initState();
 
-    getTopMovies();
+    //getTopMovies();
   }
 
   @override
@@ -59,11 +57,30 @@ class _MyHomePageState extends State<MyHomePage> {
     // The Flutter framework has been optimized to make rerunning build methods
     // fast, so that you can just rebuild anything that needs updating rather
     // than having to individually change instances of widgets.
-    return ListView.builder(
-        itemCount: movies.length,
-        itemBuilder: (BuildContext context, int index) {
-          return MovieListItem(movies[index]);
-        });
+//    return ListView.builder(
+//        itemCount: movies.length,
+//        itemBuilder: (BuildContext context, int index) {
+//          return MovieListItem(movies[index]);
+//        });
+
+    return FutureBuilder<List<MovieItem>>(
+      future: homeRequest.getMovieList(start, 10),
+      builder: (context, snapshot) {
+        if(snapshot.hasError){
+          return Text("Error...");
+        }
+        else if (snapshot.hasData) {
+          return ListView.builder(
+              itemCount: snapshot.data.length,
+              itemBuilder: (BuildContext context, int index) {
+                return MovieListItem(snapshot.data[index]);
+              });
+        }else{
+          return Text("Loading...");
+        }
+      },
+    );
+
   }
 
   void getTopMovies() {
