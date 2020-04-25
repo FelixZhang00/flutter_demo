@@ -1,9 +1,10 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
-import 'package:flutterapp/home/view/MovieListItem.dart';
+import 'package:flutterapp/home/view/movie_list_item.dart';
 
 import 'model/home_model.dart';
-
+//todo 滚动分页请求
+//todo loading展示
 class MyHomePage extends StatefulWidget {
   MyHomePage({Key key}) : super(key: key);
 
