@@ -21,7 +21,7 @@ class MyApp extends StatelessWidget{
           highlightColor: Colors.transparent,
           splashColor: Colors.transparent
       ),
-      home: MyHomePage(),
+      home: Home(),
     );
   }
 

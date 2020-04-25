@@ -3,6 +3,22 @@ import 'package:flutter/material.dart';
 import 'package:flutterapp/home/view/movie_list_item.dart';
 
 import 'model/home_model.dart';
+
+class Home extends StatelessWidget{
+  @override
+  Widget build(BuildContext context) {
+    return Scaffold(
+      appBar: AppBar(
+        title: Text("首页"),
+      ),
+      body: Center(
+        child: MyHomePage(),
+      ),
+    );
+  }
+
+}
+
 //todo 滚动分页请求
 //todo loading展示
 class MyHomePage extends StatefulWidget {

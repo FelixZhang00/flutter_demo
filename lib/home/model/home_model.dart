@@ -21,6 +21,7 @@ class MovieItem {
     item.rank = counter++;
     item.title = json["title"];
     item.imageUrl = json["images"]["medium"];
+    item.playDate = json["year"];
     item.genres = json["genres"].cast<String>();
     item.rating = json["rating"]["average"];
     item.casts = (json["casts"] as List<dynamic>).map((e) => Actor.fromJson(e)).toList();
