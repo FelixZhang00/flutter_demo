@@ -1,5 +1,7 @@
 import 'package:flutter/material.dart';
 
+import 'network/http_request.dart';
+
 void main() => runApp(MyApp());
 
 class MyApp extends StatelessWidget {
@@ -55,6 +57,10 @@ class _MyHomePageState extends State<MyHomePage> {
       // called again, and so nothing would appear to happen.
       print('hello $_counter');
       _counter++;
+      var data =  HttpRequest.request("http://www.baidu.com");
+      data.then((reslut){
+        print(reslut);
+      });
     });
   }
 
