@@ -4,7 +4,7 @@ import 'package:flutterapp/home/view/movie_list_item.dart';
 
 import 'model/home_model.dart';
 
-class Home extends StatelessWidget{
+class Home extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -16,10 +16,8 @@ class Home extends StatelessWidget{
       ),
     );
   }
-
 }
 
-//todo 滚动分页请求
 class MyHomePage extends StatefulWidget {
   MyHomePage({Key key}) : super(key: key);
 
@@ -38,15 +36,19 @@ class MyHomePage extends StatefulWidget {
 
 class _MyHomePageState extends State<MyHomePage> {
   HomeRequest homeRequest = HomeRequest();
-
-  int start = 0;
+  ScrollController _controller;
+  int _start = 0;
   final List<MovieItem> movies = [];
+  bool _loadingMore = false;
+  bool _loading = true;
+  static const int COUNT = 10;
 
   @override
   void initState() {
+    _controller = ScrollController();
+    _controller.addListener(_scrollListener);
     super.initState();
-
-    //getTopMovies();
+    _getTopMovies();
   }
 
   @override
@@ -57,38 +59,40 @@ class _MyHomePageState extends State<MyHomePage> {
     // The Flutter framework has been optimized to make rerunning build methods
     // fast, so that you can just rebuild anything that needs updating rather
     // than having to individually change instances of widgets.
-//    return ListView.builder(
-//        itemCount: movies.length,
-//        itemBuilder: (BuildContext context, int index) {
-//          return MovieListItem(movies[index]);
-//        });
-
-    return FutureBuilder<List<MovieItem>>(
-      future: homeRequest.getMovieList(start, 10),
-      builder: (context, snapshot) {
-        if(snapshot.hasError){
-          return Text("Error...");
-        }
-        else if (snapshot.hasData) {
-          return ListView.builder(
-              itemCount: snapshot.data.length,
-              itemBuilder: (BuildContext context, int index) {
-                return MovieListItem(snapshot.data[index]);
-              });
-        }else{
-          return Text("Loading...");
-        }
-      },
-    );
-
+    if (_loading) {
+      return Text("Loading...");
+    } else {
+      return ListView.builder(
+          controller: _controller,
+          itemCount: movies.length,
+          itemBuilder: (BuildContext context, int index) {
+            return MovieListItem(movies[index]);
+          });
+    }
   }
 
-  void getTopMovies() {
-    homeRequest.getMovieList(start, 10)
-        .then((result) {
+  void _getTopMovies() {
+    homeRequest.getMovieList(_start, COUNT).then((result) {
       setState(() {
+        _loadingMore = false;
+        _loading = false;
         movies.addAll(result);
       });
     });
+  }
+
+  void _loadMore() {
+    setState(() {
+      _loadingMore = true;
+    });
+    _start = movies.length + COUNT;
+    _getTopMovies();
+  }
+
+  _scrollListener() {
+    if (_controller.offset >= _controller.position.maxScrollExtent &&
+        !_controller.position.outOfRange) {
+      _loadMore();
+    }
   }
 }
