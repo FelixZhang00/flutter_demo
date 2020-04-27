@@ -66,7 +66,10 @@ class _MyHomePageState extends State<MyHomePage> {
           controller: _controller,
           itemCount: movies.length,
           itemBuilder: (BuildContext context, int index) {
-            return MovieListItem(movies[index]);
+            return GestureDetector(
+              child: MovieListItem(movies[index]),
+              onTap: () => _onItemClicked(context,movies[index]),
+            );
           });
     }
   }
@@ -95,4 +98,10 @@ class _MyHomePageState extends State<MyHomePage> {
       _loadMore();
     }
   }
+}
+
+void _onItemClicked(BuildContext context, MovieItem item) {
+  print(item.title);
+  Navigator.pushNamed(context, "detail_pag1e",arguments: item);
+
 }
